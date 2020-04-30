@@ -16,6 +16,15 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
+
+    - uses: actions/cache@v1
+      if: startsWith(runner.os, 'Linux')
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/**/setup.py') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
     - name: Install dev dependencies
       run: |
         pip install --upgrade pip
